@@ -1,0 +1,166 @@
+@font-face {
+  font-family: "Vazir";
+  font-display: swap;
+  font-style: normal;
+  font-weight: 100 900;
+  src: url("/assets/fonts/Vazirmatn.woff2") format("woff2-variations");
+}
+
+:root {
+  --card-bg: rgba(16, 18, 21, 0.93);
+  --card-border: rgba(255, 255, 255, 0.14);
+  --text: #ffffff;
+  --muted: rgba(255, 255, 255, 0.72);
+  --accent: #ff0033;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background: transparent;
+  block-size: 100%;
+  inline-size: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  direction: rtl;
+  font-family: "Vazir", "Vazirmatn", Tahoma, Arial, sans-serif;
+}
+
+.overlay-stage {
+  block-size: 100vh;
+  inline-size: 100vw;
+  position: relative;
+}
+
+.comment-card {
+  align-items: center;
+  background: linear-gradient(100deg, rgba(16, 18, 21, 0.96), var(--card-bg));
+  border: 1px solid var(--card-border);
+  border-inline-start: 8px solid var(--accent);
+  border-radius: 8px;
+  bottom: 11vh;
+  box-shadow: 0 24px 72px rgba(0, 0, 0, 0.34);
+  color: var(--text);
+  direction: rtl;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 96px minmax(0, 1fr);
+  inline-size: min(64vw, 1180px);
+  left: 7.2vw;
+  min-block-size: 136px;
+  opacity: 0;
+  padding: 22px 28px 22px 24px;
+  pointer-events: none;
+  position: absolute;
+  transform: translateY(22px);
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.comment-card.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.comment-card.is-swapping {
+  transform: translateY(0) scale(0.992);
+}
+
+.avatar-shell {
+  align-items: center;
+  background: #2a2f36;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  block-size: 96px;
+  display: flex;
+  font-size: 30px;
+  font-weight: 900;
+  inline-size: 96px;
+  justify-content: center;
+  overflow: hidden;
+}
+
+#avatar-image {
+  block-size: 100%;
+  display: none;
+  inline-size: 100%;
+  object-fit: cover;
+}
+
+.avatar-shell.has-image #avatar-image {
+  display: block;
+}
+
+.avatar-shell.has-image .avatar-fallback {
+  display: none;
+}
+
+.comment-copy {
+  min-inline-size: 0;
+}
+
+.author-name {
+  color: var(--muted);
+  font-size: 26px;
+  font-weight: 850;
+  letter-spacing: 0;
+  line-height: 1.15;
+  margin-block-end: 8px;
+  overflow: hidden;
+  text-align: start;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.message-text {
+  color: var(--text);
+  display: -webkit-box;
+  font-size: 42px;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.18;
+  max-block-size: 150px;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  text-align: start;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+@media (max-width: 900px) {
+  .comment-card {
+    bottom: 8vh;
+    gap: 16px;
+    grid-template-columns: 68px minmax(0, 1fr);
+    inline-size: calc(100vw - 32px);
+    left: 16px;
+    min-block-size: 104px;
+    padding: 16px;
+  }
+
+  .avatar-shell {
+    block-size: 68px;
+    font-size: 22px;
+    inline-size: 68px;
+  }
+
+  .author-name {
+    font-size: 18px;
+  }
+
+  .message-text {
+    font-size: 26px;
+    max-block-size: 96px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .comment-card {
+    transition: none;
+  }
+}

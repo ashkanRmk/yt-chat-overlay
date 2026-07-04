@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en" dir="rtl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Comment Overlay</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="/assets/overlay.css">
+    <script src="/assets/overlay.js" defer></script>
+  </head>
+  <body dir="rtl">
+    <main class="overlay-stage" aria-live="polite">
+      <section class="comment-card" id="comment-card" aria-hidden="true" dir="rtl">
+        <div class="avatar-shell" aria-hidden="true">
+          <img id="avatar-image" alt="">
+          <div class="avatar-fallback" id="avatar-fallback"></div>
+        </div>
+        <div class="comment-copy">
+          <div class="author-name" id="author-name" dir="rtl"></div>
+          <div class="message-text" id="message-text" dir="auto"></div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>YouTube Chat Fixture</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="/extension/content.css">
+    <style>
+      :root {
+        --border: #e1e5ea;
+        --text: #17191c;
+        --muted: #65707c;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        background: #f6f7f9;
+        color: var(--text);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, Arial, sans-serif;
+        margin: 0;
+      }
+
+      .fixture-shell {
+        inline-size: min(720px, calc(100vw - 24px));
+        margin: 0 auto;
+        padding: 22px 0;
+      }
+
+      header {
+        align-items: center;
+        display: flex;
+        gap: 16px;
+        justify-content: space-between;
+        margin-block-end: 14px;
+      }
+
+      h1 {
+        font-size: 22px;
+        letter-spacing: 0;
+        line-height: 1.2;
+        margin: 0;
+      }
+
+      .fixture-actions {
+        display: flex;
+        gap: 8px;
+      }
+
+      .fixture-actions button {
+        border: 1px solid #cbd2dc;
+        border-radius: 8px;
+        cursor: pointer;
+        font: 700 13px/1 system-ui, sans-serif;
+        min-block-size: 36px;
+        padding: 0 12px;
+      }
+
+      #items {
+        background: #ffffff;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      yt-live-chat-text-message-renderer {
+        align-items: flex-start;
+        border-block-end: 1px solid var(--border);
+        display: grid;
+        gap: 10px;
+        grid-template-columns: 36px minmax(0, 1fr);
+        padding: 12px;
+      }
+
+      yt-live-chat-text-message-renderer:last-child {
+        border-block-end: 0;
+      }
+
+      #author-photo img,
+      .fixture-avatar {
+        block-size: 36px;
+        border-radius: 50%;
+        inline-size: 36px;
+        object-fit: cover;
+      }
+
+      #content {
+        min-inline-size: 0;
+      }
+
+      #timestamp {
+        color: var(--muted);
+        font-size: 12px;
+        margin-inline-end: 6px;
+      }
+
+      #author-name {
+        font-weight: 800;
+      }
+
+      #before-content-buttons {
+        display: inline-flex;
+      }
+
+      #message-container {
+        display: block;
+        margin-block-start: 4px;
+      }
+
+      #message {
+        line-height: 1.45;
+        overflow-wrap: anywhere;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="fixture-shell">
+      <header>
+        <h1>Local YouTube Chat Fixture</h1>
+        <div class="fixture-actions">
+          <button type="button" id="add-message">Add Message</button>
+        </div>
+      </header>
+
+      <div id="items">
+        <yt-live-chat-text-message-renderer>
+          <yt-img-shadow id="author-photo">
+            <img alt="" src="/assets/fixture-avatar.svg">
+          </yt-img-shadow>
+          <div id="content">
+            <span id="timestamp">5:03 PM</span>
+            <yt-live-chat-author-chip>
+              <span id="author-name" dir="auto">@Sara</span>
+            </yt-live-chat-author-chip>
+            <div id="before-content-buttons"></div>
+            <span id="message-container">
+              <span id="message" dir="auto">سلام، این یک پیام تست برای پایین صفحه است.</span>
+            </span>
+          </div>
+        </yt-live-chat-text-message-renderer>
+
+        <yt-live-chat-text-message-renderer>
+          <yt-img-shadow id="author-photo">
+            <img alt="" src="/assets/fixture-avatar.svg">
+          </yt-img-shadow>
+          <div id="content">
+            <span id="timestamp">5:04 PM</span>
+            <yt-live-chat-author-chip>
+              <span id="author-name" dir="auto">Alex</span>
+            </yt-live-chat-author-chip>
+            <div id="before-content-buttons"></div>
+            <span id="message-container">
+              <span id="message" dir="auto">This is a clean English comment with emoji 😀</span>
+            </span>
+          </div>
+        </yt-live-chat-text-message-renderer>
+
+        <yt-live-chat-text-message-renderer>
+          <div class="fixture-avatar" aria-hidden="true"></div>
+          <div id="content">
+            <span id="timestamp">5:05 PM</span>
+            <yt-live-chat-author-chip>
+              <span id="author-name" dir="auto">@NoAvatar</span>
+            </yt-live-chat-author-chip>
+            <div id="before-content-buttons"></div>
+            <span id="message-container">
+              <span id="message" dir="auto">Mixed RTL/LTR: نسخه 2 is ready for OBS overlay testing.</span>
+            </span>
+          </div>
+        </yt-live-chat-text-message-renderer>
+
+        <yt-live-chat-text-message-renderer>
+          <yt-img-shadow id="author-photo">
+            <img alt="" src="/assets/fixture-avatar.svg">
+          </yt-img-shadow>
+          <div id="content">
+            <span id="timestamp">5:06 PM</span>
+            <yt-live-chat-author-chip>
+              <span id="author-name" dir="auto">LongMessageUser</span>
+            </yt-live-chat-author-chip>
+            <div id="before-content-buttons"></div>
+            <span id="message-container">
+              <span id="message" dir="auto">A longer comment should stay readable and should not push the lower third around in OBS. It wraps within a stable card and clamps after a few lines.</span>
+            </span>
+          </div>
+        </yt-live-chat-text-message-renderer>
+      </div>
+    </main>
+
+    <script src="/extension/comment-extractor.js"></script>
+    <script src="/extension/decorator.js"></script>
+    <script src="/extension/content.js"></script>
+    <script>
+      const samples = [
+        ["@NewPersian", "پیام تازه از MutationObserver"],
+        ["New English", "A newly appended chat row receives its Show button."],
+        ["Emoji Test", "Hearts, stars, and faces ❤️ ⭐ 🙂"],
+      ];
+      let index = 0;
+
+      document.querySelector("#add-message").addEventListener("click", () => {
+        const sample = samples[index % samples.length];
+        index += 1;
+
+        const row = document.createElement("yt-live-chat-text-message-renderer");
+        row.innerHTML = `
+          <yt-img-shadow id="author-photo">
+            <img alt="" src="/assets/fixture-avatar.svg">
+          </yt-img-shadow>
+          <div id="content">
+            <span id="timestamp">now</span>
+            <yt-live-chat-author-chip>
+              <span id="author-name" dir="auto"></span>
+            </yt-live-chat-author-chip>
+            <div id="before-content-buttons"></div>
+            <span id="message-container">
+              <span id="message" dir="auto"></span>
+            </span>
+          </div>
+        `;
+        row.querySelector("#author-name").textContent = sample[0];
+        row.querySelector("#message").textContent = sample[1];
+        document.querySelector("#items").appendChild(row);
+      });
+    </script>
+  </body>
+</html>

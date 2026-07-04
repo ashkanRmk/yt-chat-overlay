@@ -1,0 +1,63 @@
+.lco-show-button {
+  appearance: none;
+  border: 0;
+  border-radius: 999px;
+  background: #ff0033;
+  color: #ffffff;
+  cursor: pointer;
+  font: 700 11px/1 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: 0;
+  margin-inline-end: 6px;
+  min-height: 22px;
+  padding: 5px 9px;
+  vertical-align: middle;
+}
+
+.lco-show-button:hover {
+  background: #d9002b;
+}
+
+.lco-show-button:disabled {
+  cursor: progress;
+  opacity: 0.82;
+}
+
+.lco-show-button[data-state="sent"] {
+  background: #0a8f58;
+}
+
+.lco-show-button[data-state="error"] {
+  background: #a32626;
+}
+
+.lco-clear-control {
+  position: fixed;
+  right: 12px;
+  top: 54px;
+  z-index: 2147483647;
+}
+
+.lco-clear-button {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  background: rgba(15, 15, 15, 0.9);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);
+  color: #ffffff;
+  cursor: pointer;
+  font: 700 12px/1 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: 0;
+  padding: 8px 12px;
+}
+
+.lco-clear-button:hover {
+  background: #ff0033;
+}
+
+.lco-clear-button[data-state="sent"] {
+  background: #0a8f58;
+}
+
+.lco-clear-button[data-state="error"] {
+  background: #a32626;
+}

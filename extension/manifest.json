@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Live YouTube Comment Overlay",
+  "version": "0.1.0",
+  "description": "Adds Show buttons to YouTube popout chat for a local OBS overlay.",
+  "host_permissions": [
+    "http://127.0.0.1:3000/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://studio.youtube.com/live_chat*"
+      ],
+      "css": [
+        "content.css"
+      ],
+      "js": [
+        "comment-extractor.js",
+        "decorator.js",
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}
