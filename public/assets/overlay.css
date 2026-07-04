@@ -7,11 +7,16 @@
 }
 
 :root {
-  --card-bg: rgba(16, 18, 21, 0.93);
-  --card-border: rgba(255, 255, 255, 0.14);
-  --text: #ffffff;
-  --muted: rgba(255, 255, 255, 0.72);
-  --accent: #ff0033;
+  --ink: #0a0c12;
+  --slate: #181b23;
+  --text: #f4f6fb;
+  --muted: rgba(228, 232, 242, 0.6);
+  --accent: #8a6bff;
+  --accent-indigo: #5b63f5;
+  --accent-grad: linear-gradient(135deg, #9b7cff 0%, #5b63f5 100%);
+  --accent-glow: rgba(124, 96, 255, 0.45);
+  --hairline: rgba(255, 255, 255, 0.12);
+  --sheen: rgba(255, 255, 255, 0.06);
 }
 
 * {
@@ -38,49 +43,66 @@ body {
   position: relative;
 }
 
+/*
+ * The card is now just a transparent positioning column, pinned to the
+ * lower-third leading edge. The two children (identity pill + message panel)
+ * carry every visual and animate independently off the shared .is-visible flag.
+ */
 .comment-card {
-  align-items: center;
-  background: linear-gradient(100deg, rgba(16, 18, 21, 0.96), var(--card-bg));
-  border: 1px solid var(--card-border);
-  border-inline-start: 8px solid var(--accent);
-  border-radius: 8px;
+  align-items: flex-start;
   bottom: 11vh;
-  box-shadow: 0 24px 72px rgba(0, 0, 0, 0.34);
   color: var(--text);
   direction: rtl;
-  display: grid;
-  gap: 24px;
-  grid-template-columns: 96px minmax(0, 1fr);
-  inline-size: min(64vw, 1180px);
+  display: flex;
+  flex-direction: column;
+  inline-size: min(56vw, 1080px);
   left: 7.2vw;
-  min-block-size: 136px;
-  opacity: 0;
-  padding: 22px 28px 22px 24px;
   pointer-events: none;
   position: absolute;
-  transform: translateY(22px);
-  transition: opacity 220ms ease, transform 220ms ease;
 }
 
-.comment-card.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+/* ---------- Beat 1: identity pill (avatar + username) ---------- */
+.identity {
+  align-items: center;
+  background: linear-gradient(180deg, rgba(30, 34, 44, 0.8) 0%, rgba(24, 27, 35, 0.72) 100%);
+  -webkit-backdrop-filter: blur(14px) saturate(125%);
+  backdrop-filter: blur(14px) saturate(125%);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  box-shadow:
+    inset 0 1px 0 var(--sheen),
+    0 2px 8px rgba(0, 0, 0, 0.35),
+    0 12px 30px rgba(0, 0, 0, 0.3);
+  display: flex;
+  gap: 16px;
+  max-inline-size: 100%;
+  padding-block: 8px;
+  padding-inline: 8px 26px;
+  position: relative;
+  z-index: 2;
 
-.comment-card.is-swapping {
-  transform: translateY(0) scale(0.992);
+  opacity: 0;
+  transform: translateY(14px) scale(0.94);
+  transform-origin: 100% 100%;
+  transition: opacity 180ms ease, transform 190ms ease;
+  transition-delay: 20ms; /* exit: pill leaves a touch after the message */
 }
 
 .avatar-shell {
   align-items: center;
-  background: #2a2f36;
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: #2a2f3a;
   border-radius: 50%;
-  block-size: 96px;
+  block-size: 56px;
+  box-shadow:
+    0 0 0 2px var(--slate),
+    0 0 0 4px var(--accent),
+    0 0 20px var(--accent-glow);
+  color: var(--text);
   display: flex;
-  font-size: 30px;
+  flex: none;
+  font-size: 22px;
   font-weight: 900;
-  inline-size: 96px;
+  inline-size: 56px;
   justify-content: center;
   overflow: hidden;
 }
@@ -100,30 +122,65 @@ body {
   display: none;
 }
 
-.comment-copy {
-  min-inline-size: 0;
-}
-
 .author-name {
-  color: var(--muted);
-  font-size: 26px;
-  font-weight: 850;
-  letter-spacing: 0;
+  color: var(--text);
+  font-size: 25px;
+  font-weight: 700;
   line-height: 1.15;
-  margin-block-end: 8px;
+  max-inline-size: 46vw;
   overflow: hidden;
   text-align: start;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
+/* ---------- Beat 2: message panel ---------- */
+.message-panel {
+  background: linear-gradient(160deg, rgba(16, 19, 27, 0.72) 0%, rgba(10, 12, 18, 0.66) 100%);
+  -webkit-backdrop-filter: blur(16px) saturate(125%);
+  backdrop-filter: blur(16px) saturate(125%);
+  border: 1px solid var(--hairline);
+  border-radius: 18px;
+  box-shadow:
+    inset 0 1px 0 var(--sheen),
+    0 0 0 1px var(--hairline),
+    0 8px 24px rgba(0, 0, 0, 0.32),
+    0 26px 64px rgba(0, 0, 0, 0.42);
+  margin-block-start: -14px; /* tuck under the pill for layered depth */
+  max-inline-size: 100%;
+  min-block-size: 96px;
+  padding: 34px 32px 24px;
+  position: relative;
+  z-index: 1;
+
+  opacity: 0;
+  transform: translateY(18px) scale(0.985);
+  transform-origin: 100% 0;
+  transition: opacity 170ms ease, transform 180ms ease;
+  transition-delay: 0ms; /* exit: message leaves first */
+}
+
+/* Accent spine drawn along the leading (inline-start) edge. */
+.spine {
+  background: var(--accent-grad);
+  border-radius: 999px;
+  box-shadow: 0 0 14px var(--accent-glow);
+  inline-size: 6px;
+  inset-block: 18px;
+  inset-inline-start: 0;
+  position: absolute;
+
+  transform: scaleY(0);
+  transition: transform 150ms ease;
+  transition-delay: 0ms;
+}
+
 .message-text {
   color: var(--text);
   display: -webkit-box;
-  font-size: 42px;
-  font-weight: 800;
-  letter-spacing: 0;
-  line-height: 1.18;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.2;
   max-block-size: 150px;
   overflow: hidden;
   overflow-wrap: anywhere;
@@ -132,25 +189,59 @@ body {
   -webkit-line-clamp: 3;
 }
 
+/*
+ * Orchestrated entrance. The destination state (.is-visible) supplies the
+ * lush timing + staggered delays; removing the class falls back to the fast
+ * base transitions above, so the swap completes inside overlay.js's 220ms
+ * FADE_OUT_MS without a mid-swap flicker.
+ */
+.comment-card.is-visible .identity {
+  opacity: 1;
+  transform: none;
+  transition: opacity 300ms ease, transform 420ms cubic-bezier(0.34, 1.3, 0.5, 1);
+  transition-delay: 60ms; /* enter: pill first */
+}
+
+.comment-card.is-visible .spine {
+  transform: scaleY(1);
+  transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: 160ms; /* enter: spine draws in mid-sequence */
+}
+
+.comment-card.is-visible .message-panel {
+  opacity: 1;
+  transform: none;
+  transition: opacity 360ms ease, transform 460ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: 200ms; /* enter: message unfurls after the pill */
+}
+
 @media (max-width: 900px) {
   .comment-card {
     bottom: 8vh;
-    gap: 16px;
-    grid-template-columns: 68px minmax(0, 1fr);
     inline-size: calc(100vw - 32px);
     left: 16px;
-    min-block-size: 104px;
-    padding: 16px;
+  }
+
+  .identity {
+    gap: 12px;
+    padding-inline: 6px 18px;
   }
 
   .avatar-shell {
-    block-size: 68px;
-    font-size: 22px;
-    inline-size: 68px;
+    block-size: 44px;
+    font-size: 18px;
+    inline-size: 44px;
   }
 
   .author-name {
     font-size: 18px;
+    max-inline-size: 60vw;
+  }
+
+  .message-panel {
+    border-radius: 14px;
+    margin-block-start: -12px;
+    padding: 26px 20px 18px;
   }
 
   .message-text {
@@ -160,7 +251,14 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .comment-card {
-    transition: none;
+  .identity,
+  .message-panel,
+  .spine,
+  .comment-card.is-visible .identity,
+  .comment-card.is-visible .message-panel,
+  .comment-card.is-visible .spine {
+    transform: none;
+    transition: opacity 120ms ease;
+    transition-delay: 0ms;
   }
 }
