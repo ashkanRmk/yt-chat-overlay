@@ -64,7 +64,7 @@ body {
 /* ---------- Beat 1: identity pill (avatar + username) ---------- */
 .identity {
   align-items: center;
-  background: linear-gradient(180deg, rgba(30, 34, 44, 0.8) 0%, rgba(24, 27, 35, 0.72) 100%);
+  background: linear-gradient(180deg, rgba(30, 34, 44, 0.88) 0%, rgba(24, 27, 35, 0.82) 100%);
   -webkit-backdrop-filter: blur(14px) saturate(125%);
   backdrop-filter: blur(14px) saturate(125%);
   border: 1px solid var(--hairline);
@@ -72,7 +72,8 @@ body {
   box-shadow:
     inset 0 1px 0 var(--sheen),
     0 2px 8px rgba(0, 0, 0, 0.35),
-    0 12px 30px rgba(0, 0, 0, 0.3);
+    0 12px 30px rgba(0, 0, 0, 0.3),
+    0 0 44px 14px rgba(0, 0, 0, 0.34);
   display: flex;
   gap: 16px;
   max-inline-size: 100%;
@@ -136,16 +137,22 @@ body {
 
 /* ---------- Beat 2: message panel ---------- */
 .message-panel {
-  background: linear-gradient(160deg, rgba(16, 19, 27, 0.72) 0%, rgba(10, 12, 18, 0.66) 100%);
+  background: linear-gradient(160deg, rgba(15, 18, 26, 0.86) 0%, rgba(9, 11, 17, 0.82) 100%);
   -webkit-backdrop-filter: blur(16px) saturate(125%);
   backdrop-filter: blur(16px) saturate(125%);
   border: 1px solid var(--hairline);
   border-radius: 18px;
+  /*
+   * The last, wide+spread layer is a soft dark halo that hugs the panel's
+   * rounded shape and dissolves into the footage — this replaces the old
+   * rectangular scrim, giving legibility over busy video with no hard edges.
+   */
   box-shadow:
     inset 0 1px 0 var(--sheen),
     0 0 0 1px var(--hairline),
     0 8px 24px rgba(0, 0, 0, 0.32),
-    0 26px 64px rgba(0, 0, 0, 0.42);
+    0 26px 64px rgba(0, 0, 0, 0.42),
+    0 0 70px 26px rgba(0, 0, 0, 0.42);
   margin-block-start: -14px; /* tuck under the pill for layered depth */
   max-inline-size: 100%;
   min-block-size: 96px;
@@ -181,6 +188,7 @@ body {
   font-size: 40px;
   font-weight: 700;
   line-height: 1.2;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.55);
   max-block-size: 150px;
   overflow: hidden;
   overflow-wrap: anywhere;
