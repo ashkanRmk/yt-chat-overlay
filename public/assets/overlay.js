@@ -101,6 +101,7 @@
   }
 
   function renderComment(comment) {
+    card.classList.toggle("is-manual", comment.manual === true);
     authorName.textContent = displayAuthorName(comment.authorName);
     messageText.textContent = comment.message;
     authorName.setAttribute("dir", "rtl");

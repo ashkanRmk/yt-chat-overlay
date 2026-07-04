@@ -40,8 +40,24 @@ function sanitizeComment(input) {
     throw error;
   }
 
+  const manual = input.manual === true;
   const authorName = normalizeText(input.authorName, MAX_AUTHOR_LENGTH);
   const message = normalizeText(input.message, MAX_MESSAGE_LENGTH);
+
+  if (manual) {
+    if (!message) {
+      const error = new Error("A message is required.");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    return {
+      authorName: "",
+      message,
+      avatarUrl: "",
+      manual: true,
+    };
+  }
 
   if (!authorName || !message) {
     const error = new Error("Both authorName and message are required.");
@@ -53,6 +69,7 @@ function sanitizeComment(input) {
     authorName,
     message,
     avatarUrl: sanitizeAvatarUrl(input.avatarUrl),
+    manual: false,
   };
 }
 

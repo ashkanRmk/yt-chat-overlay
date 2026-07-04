@@ -24,7 +24,8 @@ body {
 }
 
 button,
-input {
+input,
+textarea {
   font: inherit;
 }
 
@@ -112,13 +113,18 @@ h2 {
 }
 
 .chat-panel,
-.obs-panel {
+.obs-panel,
+.manual-panel {
   grid-column: 1;
 }
 
 .preview-panel {
   grid-column: 2;
-  grid-row: 1 / span 2;
+  grid-row: 1 / span 3;
+}
+
+.fixture-panel {
+  grid-column: 1 / -1;
 }
 
 .field {
@@ -143,7 +149,8 @@ label {
   grid-template-columns: minmax(0, 1fr) auto auto;
 }
 
-input {
+input,
+textarea {
   background: #fbfcfd;
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -154,7 +161,14 @@ input {
   padding: 0 13px;
 }
 
-input:focus {
+textarea {
+  line-height: 1.5;
+  padding-block: 10px;
+  resize: vertical;
+}
+
+input:focus,
+textarea:focus {
   border-color: #2f6fed;
   box-shadow: 0 0 0 3px rgba(47, 111, 237, 0.16);
 }
@@ -265,6 +279,103 @@ button:disabled {
   overflow-wrap: anywhere;
 }
 
+.preview-card.is-manual {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.preview-card.is-manual .preview-avatar {
+  display: none;
+}
+
+.preview-card.is-manual .preview-author {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* Fixture panel: local reproduction of YouTube's chat DOM for testing the
+   extension's Show buttons. Everything is scoped under .fixture-panel so the
+   YouTube-like element/ID selectors can't leak into the rest of the page. */
+.fixture-panel summary {
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.fixture-panel .fixture-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-block: 14px 12px;
+}
+
+.fixture-items {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.fixture-panel yt-live-chat-text-message-renderer {
+  align-items: flex-start;
+  border-block-end: 1px solid var(--border);
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 36px minmax(0, 1fr);
+  padding: 12px;
+}
+
+.fixture-panel yt-live-chat-text-message-renderer:last-child {
+  border-block-end: 0;
+}
+
+.fixture-panel #author-photo img,
+.fixture-panel .fixture-avatar {
+  block-size: 36px;
+  border-radius: 50%;
+  inline-size: 36px;
+  object-fit: cover;
+}
+
+.fixture-panel .fixture-avatar {
+  background: #24272c;
+}
+
+.fixture-panel #content {
+  min-inline-size: 0;
+}
+
+.fixture-panel #timestamp {
+  color: var(--muted);
+  font-size: 12px;
+  margin-inline-end: 6px;
+}
+
+.fixture-panel #author-name {
+  font-weight: 800;
+}
+
+.fixture-panel #before-content-buttons {
+  display: inline-flex;
+}
+
+.fixture-panel #message-container {
+  display: block;
+  margin-block-start: 4px;
+}
+
+.fixture-panel #message {
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+/* The injected Show button is styled by /extension/content.css; undo the
+   generic app.css button rules that would otherwise leak into it. */
+.fixture-panel .lco-show-button {
+  display: inline-block;
+  inline-size: auto;
+  min-block-size: 22px;
+  padding: 5px 9px;
+}
+
 @media (max-width: 840px) {
   .app-shell {
     inline-size: min(100vw - 24px, 680px);
@@ -283,7 +394,9 @@ button:disabled {
   .workspace,
   .chat-panel,
   .obs-panel,
-  .preview-panel {
+  .manual-panel,
+  .preview-panel,
+  .fixture-panel {
     grid-column: auto;
     grid-row: auto;
   }
@@ -296,5 +409,9 @@ button:disabled {
   button,
   .secondary-link {
     inline-size: 100%;
+  }
+
+  .fixture-panel .lco-show-button {
+    inline-size: auto;
   }
 }

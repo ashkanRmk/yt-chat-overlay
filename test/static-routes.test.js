@@ -15,13 +15,17 @@ async function startTestServer() {
   };
 }
 
-test("serves the control, overlay, and local fixture pages", async (t) => {
+test("serves the control and overlay pages", async (t) => {
   const server = await startTestServer();
   t.after(server.close);
 
   const control = await fetch(`${server.baseUrl}/`);
   assert.equal(control.status, 200);
-  assert.match(await control.text(), /YouTube Live Comment Overlay/);
+  const controlHtml = await control.text();
+  assert.match(controlHtml, /YouTube Live Comment Overlay/);
+  assert.match(controlHtml, /yt-live-chat-text-message-renderer/);
+  assert.match(controlHtml, /id="fixture-items"/);
+  assert.match(controlHtml, /id="manual-form"/);
 
   const overlay = await fetch(`${server.baseUrl}/overlay`);
   assert.equal(overlay.status, 200);
@@ -32,8 +36,11 @@ test("serves the control, overlay, and local fixture pages", async (t) => {
   assert.match(overlayHtml, /id="author-name"[^>]+dir="rtl"/);
 
   const fixture = await fetch(`${server.baseUrl}/fixture`);
-  assert.equal(fixture.status, 200);
-  assert.match(await fixture.text(), /yt-live-chat-text-message-renderer/);
+  assert.equal(fixture.status, 404);
+
+  const contentCss = await fetch(`${server.baseUrl}/extension/content.css`);
+  assert.equal(contentCss.status, 200);
+  assert.match(await contentCss.text(), /lco-show-button/);
 
   const appCss = await fetch(`${server.baseUrl}/assets/app.css`);
   assert.equal(appCss.status, 200);
@@ -74,4 +81,18 @@ test("overlay renders leading handles with the at sign on the visual left", () =
   assert.match(overlayJs, /function displayAuthorName\(name\)/);
   assert.match(overlayJs, /return `\$\{withoutAt\}@`;/);
   assert.match(overlayJs, /authorName\.textContent = displayAuthorName\(comment\.authorName\)/);
+});
+
+test("manual messages hide the identity pill on the overlay", () => {
+  const overlayJs = fs.readFileSync(
+    path.join(__dirname, "..", "public", "assets", "overlay.js"),
+    "utf8",
+  );
+  const overlayCss = fs.readFileSync(
+    path.join(__dirname, "..", "public", "assets", "overlay.css"),
+    "utf8",
+  );
+
+  assert.match(overlayJs, /classList\.toggle\("is-manual", comment\.manual === true\)/);
+  assert.match(overlayCss, /\.comment-card\.is-manual \.identity \{\s*display:\s*none;/);
 });

@@ -6,6 +6,9 @@
     <title>YouTube Live Comment Overlay</title>
     <link rel="icon" href="data:,">
     <link rel="stylesheet" href="/assets/app.css">
+    <link rel="stylesheet" href="/extension/content.css">
+    <script src="/extension/comment-extractor.js" defer></script>
+    <script src="/extension/decorator.js" defer></script>
     <script src="/assets/control.js" defer></script>
   </head>
   <body>
@@ -44,9 +47,20 @@
           </div>
           <div class="button-row">
             <button type="button" id="clear-overlay">Clear Overlay</button>
-            <a class="secondary-link" href="/fixture" target="_blank" rel="noreferrer">Open Fixture</a>
           </div>
         </section>
+
+        <form class="panel manual-panel" id="manual-form" aria-label="Manual message">
+          <div class="field">
+            <label for="manual-input">Manual message</label>
+            <textarea id="manual-input" name="manual-input" rows="3" maxlength="500" dir="auto"
+                      placeholder="Type a message to show on the overlay"></textarea>
+          </div>
+          <div class="button-row">
+            <button class="primary-button" type="submit">Show on Overlay</button>
+          </div>
+          <p class="status-line" id="manual-status" role="status"></p>
+        </form>
 
         <section class="panel preview-panel" aria-label="Current overlay comment">
           <h2>Current Comment</h2>
@@ -58,6 +72,83 @@
             </div>
           </div>
         </section>
+
+        <details class="panel fixture-panel" id="fixture-panel">
+          <summary>Test messages</summary>
+          <div class="fixture-actions">
+            <button type="button" id="add-fixture-message">Add Message</button>
+          </div>
+          <!--
+            These rows reproduce YouTube's live chat DOM so the extension's
+            extractor/decorator can be exercised without going live. The
+            repeated per-row IDs (#author-photo, #author-name, #message, ...)
+            mimic YouTube's markup on purpose — only ever query them scoped to
+            a row, never with document.querySelector.
+          -->
+          <div class="fixture-items" id="fixture-items">
+            <yt-live-chat-text-message-renderer>
+              <yt-img-shadow id="author-photo">
+                <img alt="" src="/assets/fixture-avatar.svg">
+              </yt-img-shadow>
+              <div id="content">
+                <span id="timestamp">5:03 PM</span>
+                <yt-live-chat-author-chip>
+                  <span id="author-name" dir="auto">@Sara</span>
+                </yt-live-chat-author-chip>
+                <div id="before-content-buttons"></div>
+                <span id="message-container">
+                  <span id="message" dir="auto">سلام، این یک پیام تست برای پایین صفحه است.</span>
+                </span>
+              </div>
+            </yt-live-chat-text-message-renderer>
+
+            <yt-live-chat-text-message-renderer>
+              <yt-img-shadow id="author-photo">
+                <img alt="" src="/assets/fixture-avatar.svg">
+              </yt-img-shadow>
+              <div id="content">
+                <span id="timestamp">5:04 PM</span>
+                <yt-live-chat-author-chip>
+                  <span id="author-name" dir="auto">Alex</span>
+                </yt-live-chat-author-chip>
+                <div id="before-content-buttons"></div>
+                <span id="message-container">
+                  <span id="message" dir="auto">This is a clean English comment with emoji 😀</span>
+                </span>
+              </div>
+            </yt-live-chat-text-message-renderer>
+
+            <yt-live-chat-text-message-renderer>
+              <div class="fixture-avatar" aria-hidden="true"></div>
+              <div id="content">
+                <span id="timestamp">5:05 PM</span>
+                <yt-live-chat-author-chip>
+                  <span id="author-name" dir="auto">@NoAvatar</span>
+                </yt-live-chat-author-chip>
+                <div id="before-content-buttons"></div>
+                <span id="message-container">
+                  <span id="message" dir="auto">Mixed RTL/LTR: نسخه 2 is ready for OBS overlay testing.</span>
+                </span>
+              </div>
+            </yt-live-chat-text-message-renderer>
+
+            <yt-live-chat-text-message-renderer>
+              <yt-img-shadow id="author-photo">
+                <img alt="" src="/assets/fixture-avatar.svg">
+              </yt-img-shadow>
+              <div id="content">
+                <span id="timestamp">5:06 PM</span>
+                <yt-live-chat-author-chip>
+                  <span id="author-name" dir="auto">LongMessageUser</span>
+                </yt-live-chat-author-chip>
+                <div id="before-content-buttons"></div>
+                <span id="message-container">
+                  <span id="message" dir="auto">A longer comment should stay readable and should not push the lower third around in OBS. It wraps within a stable card and clamps after a few lines.</span>
+                </span>
+              </div>
+            </yt-live-chat-text-message-renderer>
+          </div>
+        </details>
       </section>
     </main>
   </body>

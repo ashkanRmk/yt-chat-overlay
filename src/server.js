@@ -7,7 +7,6 @@ const { WebSocketHub } = require("./websocket-hub");
 
 const PROJECT_ROOT = path.resolve(__dirname, "..");
 const PUBLIC_DIR = path.join(PROJECT_ROOT, "public");
-const FIXTURE_DIR = path.join(PROJECT_ROOT, "fixtures");
 const EXTENSION_DIR = path.join(PROJECT_ROOT, "extension");
 
 function createOverlayServer() {
@@ -58,11 +57,6 @@ function createOverlayServer() {
 
       if (url.pathname === "/overlay") {
         serveFile(response, path.join(PUBLIC_DIR, "overlay.html"));
-        return;
-      }
-
-      if (url.pathname === "/fixture") {
-        serveFile(response, path.join(FIXTURE_DIR, "live-chat-fixture.html"));
         return;
       }
 
@@ -209,7 +203,6 @@ if (require.main === module) {
     const baseUrl = `http://${host}:${port}`;
     console.log(`Control page: ${baseUrl}/`);
     console.log(`OBS overlay:  ${baseUrl}/overlay`);
-    console.log(`Fixture page: ${baseUrl}/fixture`);
   });
 }
 

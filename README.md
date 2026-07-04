@@ -2,6 +2,10 @@
 
 Local StreamYard-style comment picker for YouTube Live and OBS.
 
+## What is this?
+
+A localhost tool for streamers: pick a message from YouTube Live chat and display it as a lower-third card in an OBS browser source. Everything runs on the local machine for a single user — there is no auth, no persistence, and no multi-user concern by design.
+
 ## Run
 
 ```sh
@@ -30,6 +34,10 @@ Add a Browser Source:
 
 Click `Show` on a regular YouTube text chat row to display it. Click another `Show` to replace it, or `Clear` to fade it out.
 
-## Local Fixture
+## Manual Messages
 
-Use `http://127.0.0.1:3000/fixture` to test extraction, injected buttons, dynamic rows, RTL/LTR text, emoji, long messages, and missing avatars without going live.
+The control page has a "Manual message" box: type any text and click `Show on Overlay`. Manual messages render on the overlay without the avatar/username pill — message text only.
+
+## Test Messages
+
+Expand the "Test messages" panel on the control page (`http://127.0.0.1:3000/`) to test extraction, injected buttons, dynamic rows, RTL/LTR text, emoji, long messages, and missing avatars without going live.

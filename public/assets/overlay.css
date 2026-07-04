@@ -215,6 +215,28 @@ body {
   transition-delay: 200ms; /* enter: message unfurls after the pill */
 }
 
+/*
+ * Manual messages (typed by the operator, no YouTube author) hide the
+ * identity pill entirely, so the message panel loses its pill tuck and the
+ * entrance no longer waits for a pill that never appears.
+ */
+.comment-card.is-manual .identity {
+  display: none;
+}
+
+.comment-card.is-manual .message-panel {
+  margin-block-start: 0;
+  padding-block-start: 26px;
+}
+
+.comment-card.is-manual.is-visible .spine {
+  transition-delay: 120ms;
+}
+
+.comment-card.is-manual.is-visible .message-panel {
+  transition-delay: 40ms;
+}
+
 @media (max-width: 900px) {
   .comment-card {
     bottom: 8vh;
@@ -242,6 +264,11 @@ body {
     border-radius: 14px;
     margin-block-start: -12px;
     padding: 26px 20px 18px;
+  }
+
+  .comment-card.is-manual .message-panel {
+    margin-block-start: 0;
+    padding-block-start: 20px;
   }
 
   .message-text {
