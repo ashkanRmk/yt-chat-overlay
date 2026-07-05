@@ -1,9 +1,4 @@
 (function initControlPage() {
-  const VIDEO_ID_PATTERN = /^[A-Za-z0-9_-]{11}$/;
-
-  const chatForm = document.querySelector("#chat-form");
-  const chatInput = document.querySelector("#chat-input");
-  const chatStatus = document.querySelector("#chat-status");
   const overlayInput = document.querySelector("#overlay-url");
   const copyOverlayButton = document.querySelector("#copy-overlay");
   const openOverlayButton = document.querySelector("#open-overlay");
@@ -21,18 +16,6 @@
   const addFixtureMessageButton = document.querySelector("#add-fixture-message");
 
   overlayInput.value = `${window.location.origin}/overlay`;
-
-  chatForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-
-    try {
-      const url = toPopoutChatUrl(chatInput.value);
-      window.open(url, "youtube-popout-chat", "popup=yes,width=460,height=900");
-      setChatStatus("Chat opened in Chrome.", false);
-    } catch (error) {
-      setChatStatus(error.message, true);
-    }
-  });
 
   copyOverlayButton.addEventListener("click", async () => {
     await navigator.clipboard.writeText(overlayInput.value);
@@ -82,48 +65,6 @@
     .catch(() => setConnection("offline"));
 
   connectWebSocket();
-
-  function extractVideoId(input) {
-    const value = String(input || "").trim();
-    if (VIDEO_ID_PATTERN.test(value)) {
-      return value;
-    }
-
-    let url;
-    try {
-      url = new URL(value);
-    } catch {
-      throw new Error("Enter a valid YouTube video ID or chat URL.");
-    }
-
-    const host = url.hostname.replace(/^www\./, "");
-    let videoId = "";
-
-    if (host === "youtu.be") {
-      videoId = url.pathname.split("/").filter(Boolean)[0] || "";
-    } else if (host.endsWith("youtube.com") || host === "studio.youtube.com") {
-      videoId = url.searchParams.get("v") || "";
-
-      if (!videoId && url.pathname.startsWith("/shorts/")) {
-        videoId = url.pathname.split("/").filter(Boolean)[1] || "";
-      }
-
-      if (!videoId && url.pathname.startsWith("/embed/")) {
-        videoId = url.pathname.split("/").filter(Boolean)[1] || "";
-      }
-    }
-
-    if (!VIDEO_ID_PATTERN.test(videoId)) {
-      throw new Error("Enter a valid YouTube video ID or chat URL.");
-    }
-
-    return videoId;
-  }
-
-  function toPopoutChatUrl(input) {
-    const videoId = extractVideoId(input);
-    return `https://studio.youtube.com/live_chat?is_popout=1&v=${encodeURIComponent(videoId)}`;
-  }
 
   async function postJson(path, payload = {}) {
     const response = await fetch(path, {
@@ -253,11 +194,6 @@
     connectionStatus.classList.toggle("is-online", state === "online");
     connectionStatus.classList.toggle("is-offline", state === "offline");
     connectionLabel.textContent = state === "online" ? "Connected" : "Offline";
-  }
-
-  function setChatStatus(message, isError) {
-    chatStatus.textContent = message;
-    chatStatus.classList.toggle("is-error", isError);
   }
 
   function setManualStatus(message, isError) {

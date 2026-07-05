@@ -112,7 +112,6 @@ h2 {
   padding: 22px;
 }
 
-.chat-panel,
 .obs-panel,
 .manual-panel {
   grid-column: 1;
@@ -392,7 +391,6 @@ button:disabled {
   }
 
   .workspace,
-  .chat-panel,
   .obs-panel,
   .manual-panel,
   .preview-panel,

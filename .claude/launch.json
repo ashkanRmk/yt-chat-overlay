@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "dev",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeExecutable": "dotnet",
+      "runtimeArgs": ["run", "--project", "server-dotnet"],
       "port": 3000
     }
   ]

@@ -1,6 +1,9 @@
 # Dependencies
 node_modules/
 
+bin/
+obj/
+
 # Test and build output
 coverage/
 dist/

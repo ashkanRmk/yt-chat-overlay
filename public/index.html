@@ -16,7 +16,7 @@
       <header class="app-header">
         <div>
           <h1>YouTube Live Comment Overlay</h1>
-          <p class="muted">Local control for Chrome, YouTube popout chat, and OBS.</p>
+          <p class="muted">Local control for the Chrome extension and OBS.</p>
         </div>
         <div class="connection" id="connection-status">
           <span class="status-dot" aria-hidden="true"></span>
@@ -25,17 +25,6 @@
       </header>
 
       <section class="workspace" aria-label="Overlay controls">
-        <form class="panel chat-panel" id="chat-form">
-          <div class="field">
-            <label for="chat-input">YouTube video ID or popout chat URL</label>
-            <div class="input-row">
-              <input id="chat-input" name="chat-input" autocomplete="off" spellcheck="false" placeholder="FkGmLABFJeU">
-              <button class="primary-button" type="submit">Open Chat</button>
-            </div>
-          </div>
-          <p class="status-line" id="chat-status" role="status"></p>
-        </form>
-
         <section class="panel obs-panel" aria-label="OBS overlay source">
           <div class="field">
             <label for="overlay-url">OBS Browser Source URL</label>
