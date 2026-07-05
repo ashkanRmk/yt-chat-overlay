@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/LiveCommentOverlay.csproj" />
+  <Project Path="tests/LiveCommentOverlay.Tests.csproj" />
+</Solution>

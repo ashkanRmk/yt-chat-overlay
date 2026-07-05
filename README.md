@@ -11,7 +11,7 @@ A localhost tool for streamers: pick a message from YouTube Live chat and displa
 The pieces only ever talk over `http://127.0.0.1:3000`. Nothing leaves the machine.
 
 1. **Chrome extension** (`extension/`, MV3) is injected into `studio.youtube.com/live_chat*`. It adds a **Show** button to every chat row plus a floating **Clear** button, then `POST`s the selected comment to the local server. It never talks to the overlay directly.
-2. **Backend server** (`server-dotnet/`) is a tiny .NET 10 minimal-API app on Kestrel. It sanitizes and stores exactly one `currentComment` in memory — the last one shown — serves the overlay/control pages and extension files, and broadcasts every show/clear to all connected clients over a WebSocket at `/ws` (new clients get the current comment on connect).
+2. **Backend server** (`src/`) is a tiny .NET 10 minimal-API app on Kestrel. It sanitizes and stores exactly one `currentComment` in memory — the last one shown — serves the overlay/control pages and extension files, and broadcasts every show/clear to all connected clients over a WebSocket at `/ws` (new clients get the current comment on connect).
 3. **Overlay page** (`public/overlay.html`) is the OBS browser source; it connects to `/ws` and cross-fades between comments. The **control page** (`public/index.html`) is the operator dashboard: live preview, Clear button, a manual-message box, and a "Test messages" fixture panel.
 
 ## Screenshots
@@ -31,10 +31,10 @@ Open `http://127.0.0.1:3000/` to copy the OBS Browser Source URL, type manual me
 ## Run
 
 ```sh
-dotnet run --project server-dotnet
+cd src && dotnet run
 ```
 
-Requires the .NET 10 SDK. Open `http://127.0.0.1:3000/`; the console prints the control and overlay URLs. Set `PORT` to change the port (the host is always `127.0.0.1`).
+Requires the .NET 10 SDK. Open `http://127.0.0.1:3000/`; the console prints the control and overlay URLs. Set `PORT` to change the port (the host is always `127.0.0.1`). `dotnet run` targets a single project, so it is run from `src/` (from the repo root you can also use `dotnet run --project src`).
 
 ## Chrome Extension
 
@@ -67,8 +67,8 @@ Expand the "Test messages" panel on the control page (`http://127.0.0.1:3000/`) 
 ## Testing
 
 ```sh
-dotnet test server-dotnet.Tests   # backend: HTTP + WebSocket + sanitizer tests (needs .NET 10 SDK)
-npm test                          # client: extension tests (Node >= 22)
+dotnet test   # backend: HTTP + WebSocket + sanitizer tests (needs .NET 10 SDK; run from the repo root)
+npm test      # client: extension tests (Node >= 22)
 ```
 
 The backend tests host the app in-memory with `WebApplicationFactory` and drive it over real HTTP/WebSocket. The Node tests cover the browser/extension code (`test/comment-extractor.test.js`, `test/decorator.test.js`) against hand-built fake DOM objects.

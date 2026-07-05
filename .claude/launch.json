@@ -4,7 +4,7 @@
     {
       "name": "dev",
       "runtimeExecutable": "dotnet",
-      "runtimeArgs": ["run", "--project", "server-dotnet"],
+      "runtimeArgs": ["run", "--project", "src"],
       "port": 3000
     }
   ]

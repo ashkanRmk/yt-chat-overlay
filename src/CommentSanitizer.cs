@@ -3,7 +3,7 @@ using System.Text;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 
-namespace Overlay;
+namespace LiveCommentOverlay;
 
 /// <summary>
 /// Faithful port of <c>src/comment-sanitizer.js</c>. Every rule (max lengths, the exact

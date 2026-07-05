@@ -3,7 +3,7 @@ using System.Net.WebSockets;
 using System.Text.Json.Nodes;
 using Microsoft.AspNetCore.Mvc.Testing;
 
-namespace Overlay.Tests;
+namespace LiveCommentOverlay.Tests;
 
 // HTTP + WebSocket behaviour, ported from test/server.test.js. Each test gets a fresh app (fresh
 // in-memory comment state) exactly like the Node suite started a fresh server per test.
@@ -118,28 +118,40 @@ public class ServerTests
     }
 
     [Fact]
-    public async Task Cors_headers_are_present_on_every_response()
+    public async Task Cross_origin_request_carries_allow_origin_and_corp_headers()
     {
+        // The extension calls the server from studio.youtube.com. Standard CORS echoes
+        // Access-Control-Allow-Origin on the actual (non-preflight) request; the CORP header rides
+        // along on every response so the resource can be embedded cross-origin.
         using var factory = new WebApplicationFactory<Program>();
         var client = factory.CreateClient();
 
-        var response = await client.GetAsync("/api/comments/current");
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/comments/current");
+        request.Headers.Add("Origin", "https://studio.youtube.com");
+        var response = await client.SendAsync(request);
 
         Assert.Equal("*", response.Headers.GetValues("Access-Control-Allow-Origin").Single());
-        Assert.Equal("GET,POST,OPTIONS", response.Headers.GetValues("Access-Control-Allow-Methods").Single());
-        Assert.Equal("content-type", response.Headers.GetValues("Access-Control-Allow-Headers").Single());
         Assert.Equal("cross-origin", response.Headers.GetValues("Cross-Origin-Resource-Policy").Single());
     }
 
     [Fact]
-    public async Task Options_preflight_returns_204()
+    public async Task Cors_preflight_returns_204_with_allowed_methods_and_headers()
     {
+        // A real preflight (Origin + Access-Control-Request-Method) is what the browser sends before
+        // the extension's cross-origin JSON POST. Standard CORS answers it with 204 and the allow-lists.
         using var factory = new WebApplicationFactory<Program>();
         var client = factory.CreateClient();
 
-        var response = await client.SendAsync(new HttpRequestMessage(HttpMethod.Options, "/api/comments/show"));
+        var request = new HttpRequestMessage(HttpMethod.Options, "/api/comments/show");
+        request.Headers.Add("Origin", "https://studio.youtube.com");
+        request.Headers.Add("Access-Control-Request-Method", "POST");
+        request.Headers.Add("Access-Control-Request-Headers", "content-type");
+        var response = await client.SendAsync(request);
 
         Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        Assert.Equal("*", response.Headers.GetValues("Access-Control-Allow-Origin").Single());
+        Assert.Contains("POST", response.Headers.GetValues("Access-Control-Allow-Methods").Single());
+        Assert.Contains("content-type", response.Headers.GetValues("Access-Control-Allow-Headers").Single());
     }
 
     [Fact]

@@ -2,7 +2,26 @@ using System.Collections.Concurrent;
 using System.Net.WebSockets;
 using System.Text.Json;
 
-namespace Overlay;
+namespace LiveCommentOverlay;
+
+/// <summary>
+/// Tracks the current comment and the connected overlay sockets. Abstracted behind an interface so
+/// endpoints depend on the contract rather than the concrete hub (and so it can be swapped in tests).
+/// </summary>
+public interface IOverlayHub
+{
+    /// <summary>The last comment shown, or <c>null</c> after a clear.</summary>
+    Comment? Current { get; }
+
+    /// <summary>Stores the comment and broadcasts a <c>show</c> message.</summary>
+    Task ShowAsync(Comment comment);
+
+    /// <summary>Clears the comment and broadcasts a <c>clear</c> message.</summary>
+    Task ClearAsync();
+
+    /// <summary>Registers an accepted socket, sends it the <c>init</c> message, then reads until close.</summary>
+    Task HandleClientAsync(WebSocket socket, CancellationToken cancellationToken);
+}
 
 /// <summary>
 /// The .NET equivalent of <c>src/websocket-hub.js</c> plus the single-comment state that
@@ -13,7 +32,7 @@ namespace Overlay;
 /// <see cref="WebSocket.SendAsync"/> forbids concurrent writes; state access is guarded so the
 /// HTTP threads (which Kestrel runs concurrently, unlike single-threaded Node) stay consistent.
 /// </summary>
-public sealed class OverlayHub
+public sealed class OverlayHub : IOverlayHub
 {
     private sealed class Client
     {

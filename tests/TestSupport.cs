@@ -4,7 +4,7 @@ using System.Text.Json.Nodes;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 
-namespace Overlay.Tests;
+namespace LiveCommentOverlay.Tests;
 
 internal static class TestSupport
 {

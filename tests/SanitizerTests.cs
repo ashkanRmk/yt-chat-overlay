@@ -1,6 +1,6 @@
 using System.Text.Json.Nodes;
 
-namespace Overlay.Tests;
+namespace LiveCommentOverlay.Tests;
 
 // Direct unit tests for the sanitizer port. These mirror the behavioural expectations baked into
 // test/server.test.js, plus a few extra edge cases (the U+0085 divergence guard, control-char

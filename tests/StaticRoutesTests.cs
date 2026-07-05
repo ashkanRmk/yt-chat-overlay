@@ -1,7 +1,7 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc.Testing;
 
-namespace Overlay.Tests;
+namespace LiveCommentOverlay.Tests;
 
 // Static file serving, ported from test/static-routes.test.js. (The overlay.js source-inspection
 // tests in that file are language-agnostic and stay covered by the Node suite.)

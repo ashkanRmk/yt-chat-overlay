@@ -1,11 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>Overlay</RootNamespace>
-    <AssemblyName>Overlay</AssemblyName>
+    <RootNamespace>LiveCommentOverlay</RootNamespace>
+    <AssemblyName>LiveCommentOverlay</AssemblyName>
     <!-- No launchSettings / appsettings on purpose: this mirrors the zero-config Node server. -->
   </PropertyGroup>
 

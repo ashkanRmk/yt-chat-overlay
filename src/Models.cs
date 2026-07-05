@@ -1,4 +1,4 @@
-namespace Overlay;
+namespace LiveCommentOverlay;
 
 /// <summary>
 /// The one and only comment shape the whole system agrees on, matching the Node
