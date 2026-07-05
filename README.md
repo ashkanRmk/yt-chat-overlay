@@ -15,6 +15,20 @@ Four processes cooperate, and they only ever talk over `http://127.0.0.1:3000`. 
 3. **WebSocketHub** (`src/websocket-hub.js`) is a from-scratch WebSocket server attached to the HTTP server's `upgrade` event on `/ws`. Every show/clear is pushed to all connected clients; new clients get the current comment on connect.
 4. **Overlay page** (`public/overlay.html`) is the OBS browser source; it connects to `/ws` and cross-fades between comments. The **control page** (`public/index.html`) is the operator dashboard: live preview, Clear button, a manual-message box, and a "Test messages" fixture panel.
 
+## Screenshots
+
+### Operator dashboard (control page)
+
+Open `http://127.0.0.1:3000/` to point at the YouTube popout chat, copy the OBS Browser Source URL, type manual messages, and preview the comment that's currently live.
+
+![Operator dashboard showing the chat/OBS controls, a manual-message box, and the current comment preview](docs/screenshots/dashboard.png)
+
+### Overlay (OBS browser source)
+
+`http://127.0.0.1:3000/overlay` renders the selected comment as an animated lower-third card — an identity pill (avatar + name) above a message panel with an accent spine. The dark background here is only a placeholder to show contrast; in OBS the overlay is transparent and composites straight over your live video.
+
+![Overlay lower-third card with a Persian comment over a placeholder background](docs/screenshots/overlay.png)
+
 ## Run
 
 ```sh
